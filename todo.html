@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .clear{
+      text-decoration: line-through;
+      color: rgba(58, 58, 58, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>Vanilla JS Todo</h1>
+  <input class="todoInput" type="text">
+  <input class="todoSubmit" type="submit" value="+">
+  <ul class="todoList">
+  </ul>
+</body>
+<script>
+
+  var total = 0
+  const input = document.querySelector(".todoInput")
+  const todoList = document.querySelector(".todoList")
+  const todoSubmit = document.querySelector(".todoSubmit")
+
+
+  function addTodo() {
+    const todoItem = input.value
+    if (todoItem == '') {
+      console.log("Blank Value")
+      return
+    }
+    input.value = ''
+    const todo = document.createElement("li")
+    const text = document.createElement("span")
+    text.innerText = todoItem
+    todo.append(text)
+
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    todo.prepend(checkbox)
+
+    checkbox.addEventListener("click", function() {
+      if (checkbox.checked) {
+        todo.classList.add("clear")
+      } else {
+        todo.classList.remove("clear")
+      }
+    })
+
+    const update = document.createElement("input")
+    update.type = "text"
+
+    text.addEventListener("click", function() {
+      update.value = text.innerText
+      text.parentElement.replaceChild(update, text)
+    })
+
+
+    update.addEventListener("keypress", function(e) {
+      if(e.key == "Enter") {
+        text.innerText = update.value
+        update.parentElement.replaceChild(text, update)
+      }
+    })
+
+    const deleteButton = document.createElement("button")
+    deleteButton.innerText = "Delete"
+    todo.append(deleteButton)
+
+
+    deleteButton.addEventListener("click", function() {
+      todo.remove()
+    })
+    todoList.append(todo)
+  }
+
+  todoSubmit.addEventListener('click', function() {
+    addTodo()
+  })
+
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      addTodo()
+    }
+  })
+</script>
+</html>
